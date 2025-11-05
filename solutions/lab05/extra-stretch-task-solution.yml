@@ -10,7 +10,7 @@
   - name: build app
     shell:
       chdir: /opt/go-labs/solutions/lab02
-      executable: /usr/local/bin/go
+      executable: /usr/local/go/bin/go
       cmd: "build -o /opt/go-labs/solutions/lab02/bin/webapp"
   - name: start API
     shell:
