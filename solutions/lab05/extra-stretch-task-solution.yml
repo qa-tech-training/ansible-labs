@@ -9,7 +9,9 @@
       dest: /opt/go-labs
   - name: build app
     shell:
-      cmd: "cd /opt/go-labs/solutions/lab02 && /usr/local/bin/go build -o /opt/go-labs/solutions/lab02/bin/webapp"
+      chdir: /opt/go-labs/solutions/lab02
+      executable: /usr/local/bin/go
+      cmd: "build -o /opt/go-labs/solutions/lab02/bin/webapp"
   - name: start API
     shell:
       cmd: ". /opt/go-labs/solutions/lab02/bin/webapp &"
