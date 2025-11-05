@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  connection: local
+  become: true
+  tasks:
+  - name: clone codebase
+    git:
+      repo: https://github.com/qa-tech-training/go-labs
+      dest: /opt/go-labs
+  - name: build app
+    shell:
+      cmd: "cd /opt/go-labs/solutions/lab02 && go build -o /opt/go-labs/solutions/lab02/bin/webapp"
+  - name: start API
+    shell:
+      cmd: ". /opt/go-labs/solutions/lab02/bin/webapp &"
+  - name: make POST request
+    uri:
+      url: http://localhost:8080/tasks
+      method: POST
+      body_format: json
+      body:
+        id: "ae2f64"
+        title: Example
+        description: Example task
+        completed: false
+  - name: make GET request
+    uri:
+      url: http://localhost:8080/tasks
+      method: GET
+  - name: make PUT request
+    uri:
+      url: http://localhost:8080/tasks
+      method: PUT
+      body_format: json
+      body:
+        id: "ae2f64"
+        title: Example
+        description: Updated example task
+        completed: true
+  - name: make DELETE request
+    uri:
+      url: http://localhost:8080/tasks
+      method: DELETE
+      body_format: json
+      body:
+        id: "ae2f64"
+        title: Example
+        description: Updated example task
+        completed: true
