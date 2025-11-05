@@ -43,7 +43,16 @@ This command instructs ansible to:
 You should see that Ansible returns a JSON object, showing you that it has completed the task. 
 
 ### Check NGINX has been Installed Correctly
-The `curl` command can be used to check that our web server is running correctly:
+Verify that the nginx software has been installed:
+```bash
+which nginx
+```
+Due to a quirk of cloudshell, nginx is not actually running yet. Typically we would start and stop services using the _service_ module, but this will not work on cloudshell either. To start nginx using ansible, run the following:
+```bash
+cd ~/ansible-labs/lab01
+ansible 127.0.0.1 -m shell -a "cmd=$(cat ensure_nginx_started.sh)" --become
+```
+The `curl` command can then be used to check that our web server is running correctly:
 ```bash
 curl http://localhost
 ```
@@ -92,11 +101,20 @@ localhost | SUCCESS => {
 You should see that the changed value is false; this means Ansible noticed that NGINX was already installed and didn't make any changes. You can run this command as many times as you like and you will get a success message.
 
 ### Uninstall NGINX
-We will want to be able to install NGINX again in a subsequent lab, so for now we will uninstall it. Run the following ansible command:
+We will want to be able to install NGINX again in a subsequent lab, so for now we will uninstall it. First, stop the nginx server:
+```bash
+ansible 127.0.0.1 -m shell -a "cmd='killall nginx'" --become
+```
+Verify that NGINX is no longer running:
+```bash
+curl http://localhost # should fail to connect
+```
+Then to remove the nginx package from the system, run the following ansible command:
 ```bash
 ansible 127.0.0.1 -m apt -a "name=nginx state=absent update_cache=true" --become
 ```
-Note the difference from the previous command: in the module arguments, state is set to absent, as opposed to present, meaning ensure that NGINX is not installed. Verify that NGINX is no longer running:
+Note the difference from the previous command: in the module arguments, state is set to absent, as opposed to present, meaning ensure that NGINX is not installed. Verify that NGINX is no longer installed:
 ```bash
-curl http://localhost # should fail to connect
+which nginx
+echo $? # should display 1
 ```

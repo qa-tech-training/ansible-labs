@@ -42,9 +42,9 @@ ansible-playbook playbook.yml
 ```
 Wait for the play to finish, then verify that NGINX was installed:
 ```bash
-curl http://localhost
+which nginx
 ```
-You should expect to see the same response as earlier. As before, re-run the playbook and confirm that nothing changes:
+As before, re-run the playbook and confirm that nothing changes:
 ```bash
 ansible-playbook playbook.yml
 ```
@@ -88,9 +88,8 @@ Ansible can do both of these things. Edit playbook.yml so that it contains the f
     register: nginx_config
 
   - name: Restart nginx if needed
-    service:
-      name: nginx
-      state: restarted
+    shell:
+      cmd: "killall nginx || sleep 1; nginx -g 'daemon off;' &"
 ```
 We have added 2 additional tasks, one to copy our `nginx.conf` file to the relevant place and another to restart NGINX to take in the new changes.
 
@@ -131,9 +130,8 @@ Note that, even though the configuration is the same, the output still shows 1 c
     register: nginx_config
 
   - name: Restart nginx if needed
-    service:
-      name: nginx
-      state: restarted
+    shell:
+      cmd: "killall nginx || sleep 1; nginx -g 'daemon off;' &"
     when: nginx_config.changed == true # uses the result registered as nginx_config, from the task above
 ```
 Now NGINX will _only_ be restarted if a change to nginx.conf necessitated the copy to be re-executed. To observe this, re-run the playbook again:
