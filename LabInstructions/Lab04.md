@@ -278,6 +278,7 @@ Then replace the contents of playbook.yml with the following:
 ```yaml
 ---
 - hosts: gcp_role_appserver
+  become: true
   vars:
     repository_url: "https://gitlab.com/qacdevops/static-website-example"
     install_dir: "/opt/static-website-example"
@@ -285,6 +286,7 @@ Then replace the contents of playbook.yml with the following:
   - common
   - appserver
 - hosts: gcp_role_proxy
+  become: true
   roles:
   - common
   - proxy
