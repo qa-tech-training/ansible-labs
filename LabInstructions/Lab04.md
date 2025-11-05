@@ -175,6 +175,9 @@ To use these templates effectively, we must also update the playbook again, repl
       state: started
 - hosts: gcp_role_appserver
   become: true
+  vars:
+    repository_url: "https://gitlab.com/qacdevops/static-website-example"
+    install_dir: "/opt/static-website-example" 
   tasks:
   - name: 'update website from the git repository'
     git:
