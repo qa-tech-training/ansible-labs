@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  connection: local
+  name: Use Credentials
+  vars_files: 
+  - vault.yml
+  tasks:
+  - name: Make API Call
+    uri:
+      url: "http://localhost:5000/auth/tokens"
+      method: "POST"
+      url_username: "learner"
+      url_password: "{{ password }}"
+      return_content: true
+    register: result
+  - name: Add book
+    uri:
+      url: "http://localhost:5000/api/books"
+      method: "POST"
+      headers:
+        Authorization: "Bearer {{ result.content }}"
+      body_format: json
+      body:
+        title: "Example"
+        author: "John Smith"
+        genre: "scifi"
+        id: "0000012345"
+      return_content: true
+    register: result2
+  - name: print info
+    debug:
+      msg: "{{ result2 }}"

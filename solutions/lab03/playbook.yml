@@ -1,0 +1,11 @@
+---
+- hosts: all
+  name: Ping Hosts
+  tasks:
+  - name: "Ping {{ inventory_hostname }}"
+    ping:
+    register: ping_info
+  
+  - name: "Show ping_info in console"
+    debug:
+      msg: "{{ ping_info }}"

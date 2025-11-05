@@ -1,0 +1,11 @@
+---
+# tasks file for appserver
+- name: 'update website from the git repository'
+  git:
+    repo: "{{ repository_url }}"
+    dest: "{{ install_dir }}"
+- name: 'install the nginx.conf file on to the remote machine'
+  template:
+    src: nginx-server.conf
+    dest: /etc/nginx/nginx.conf
+  notify: restart nginx

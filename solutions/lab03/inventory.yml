@@ -1,0 +1,10 @@
+all:
+  children:
+    test:
+      hosts:
+        IP_OF_HOST_1:
+        IP_OF_HOST_2:
+        IP_OF_HOST_3:
+      vars:
+        ansible_user: ansible
+        ansible_ssh_private_key_file: '~/ansible-labs/lab03/ansible_key'

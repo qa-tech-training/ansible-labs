@@ -1,0 +1,3 @@
+[submodule "lab03"]
+	path = lab03
+	url = https://github.com/qa-tech-training/TF_ENV_SETUP_GCP
